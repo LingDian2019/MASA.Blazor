@@ -25,9 +25,9 @@ namespace MASA.Blazor
 
         protected double _scrollPush = 0;
 
-        public ElementReference ScrollAreaRef { get; set; }
+        public ElementReference ScrollAreaElement { get; set; }
 
-        public ElementReference PaneRef { get; set; }
+        public ElementReference PaneElement { get; set; }
 
         protected override void SetComponentClass()
         {
@@ -58,7 +58,7 @@ namespace MASA.Blazor
                 })
                 .Apply("headDay", cssBuilder =>
                 {
-                    var timestamp = cssBuilder.Context.Data as CalendarTimestamp;
+                    var timestamp = cssBuilder.Data as CalendarTimestamp;
                     cssBuilder
                         .Add("m-calendar-daily_head-day")
                         .AddIf("m-present", () => timestamp?.Present ?? false)
@@ -71,7 +71,7 @@ namespace MASA.Blazor
                         .Add("m-calendar-daily_head-weekday");
                 }, styleBuilder =>
                 {
-                    var timestamp = styleBuilder.Context.Data as CalendarTimestamp;
+                    var timestamp = styleBuilder.Data as CalendarTimestamp;
                     styleBuilder
                         .AddTextColor((timestamp?.Present ?? false) ? Color : string.Empty);
                 })
@@ -129,7 +129,7 @@ namespace MASA.Blazor
                 })
                 .Apply("day", cssBuilder =>
                 {
-                    var timestamp = cssBuilder.Context.Data as CalendarTimestamp;
+                    var timestamp = cssBuilder.Data as CalendarTimestamp;
                     cssBuilder
                         .Add("m-calendar-daily__day")
                         .AddIf("m-present", () => timestamp?.Present ?? false)
@@ -142,7 +142,7 @@ namespace MASA.Blazor
                         .Add("m-calendar-daily__day-interval");
                 }, styleBuilder =>
                 {
-                    var timestamp = styleBuilder.Context.Data as CalendarTimestamp;
+                    var timestamp = styleBuilder.Data as CalendarTimestamp;
                     //var styler = IntervalStyle(timestamp);
                     //TODO ...styler(interval),
                     styleBuilder
@@ -155,7 +155,7 @@ namespace MASA.Blazor
                 {
                     props.TryGetValue("ItemIndex", out var itemIndexStr);
                     var itemIndex = Convert.ToInt32(itemIndexStr);
-                    var day = Days()?[itemIndex];
+                    var day = Days?[itemIndex];
 
                     props[nameof(MButton.Color)] = (day?.Present ?? false) ? Color : "transparent";
                     props[nameof(MButton.Fab)] = true;
@@ -168,8 +168,8 @@ namespace MASA.Blazor
         {
             if (firstRender)
             {
-                var area = await JsInvokeAsync<Element>(JsInteropConstants.GetDomInfo, ScrollAreaRef);
-                var pane = await JsInvokeAsync<Element>(JsInteropConstants.GetDomInfo, PaneRef);
+                var area = await JsInvokeAsync<Element>(JsInteropConstants.GetDomInfo, ScrollAreaElement);
+                var pane = await JsInvokeAsync<Element>(JsInteropConstants.GetDomInfo, PaneElement);
 
                 _scrollPush = area != null && pane != null ? (area.OffsetWidth - pane.OffsetWidth) : 0;
             }

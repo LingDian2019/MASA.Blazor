@@ -57,7 +57,7 @@ namespace MASA.Blazor
             })
             .Merge("day", cssBuilder =>
             {
-                var timestamp = cssBuilder.Context.Data as CalendarTimestamp;
+                var timestamp = cssBuilder.Data as CalendarTimestamp;
                 cssBuilder
                     .Add("m-calendar-daily__day")
                     .AddIf("m-present", () => timestamp?.Present ?? false)

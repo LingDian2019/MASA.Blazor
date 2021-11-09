@@ -102,7 +102,7 @@ namespace MASA.Blazor
                 })
                 .Apply("more", cssBuilder =>
                 {
-                    var day = cssBuilder.Context.Data as CalendarDaySlotScope;
+                    var day = cssBuilder.Data as CalendarDaySlotScope;
                     cssBuilder
                         .Add("m-event-more pl-1")
                         .AddIf("m-outside", () => day.Outside);
@@ -163,11 +163,11 @@ namespace MASA.Blazor
             }
         }
 
-        public Func<CalendarTimestamp, bool, string> MonthLongFormatter =>
-            GetFormatter(new() { TimeZone = "UTC", Month = "long" });
+        public Func<CalendarTimestamp, bool, string> MonthLongFormatter => 
+            (_tms, @short) => GetFormatter(new() { TimeZone = "UTC", Month = "long" }, _tms, @short);
 
         public Func<CalendarTimestamp, bool, string> MonthShortFormatter =>
-            GetFormatter(new() { TimeZone = "UTC", Month = "short" });
+            (_tms, @short) => GetFormatter(new() { TimeZone = "UTC", Month = "short" }, _tms, @short);
 
         public List<OneOf<string, Dictionary<string, object>>> ParsedCategories =>
             CalendarParser.GetParsedCategories(Categories, CategoryText);

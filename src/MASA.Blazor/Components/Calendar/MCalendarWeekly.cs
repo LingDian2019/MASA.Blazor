@@ -41,7 +41,7 @@ namespace MASA.Blazor
                 })
                 .Apply("headDay", cssBuilder =>
                 {
-                    var timestamp = cssBuilder.Context.Data as CalendarTimestamp;
+                    var timestamp = cssBuilder.Data as CalendarTimestamp;
                     var outside = IsOutside(timestamp);
                     cssBuilder
                         .Add("m-calendar-weekly__head-weekday")
@@ -51,7 +51,7 @@ namespace MASA.Blazor
                         .AddIf("m-outside", () => outside);
                 }, styleBuilder =>
                 {
-                    var timestamp = styleBuilder.Context.Data as CalendarTimestamp;
+                    var timestamp = styleBuilder.Data as CalendarTimestamp;
                     styleBuilder
                         .AddTextColor((timestamp?.Present ?? false) ? Color : string.Empty);
                 })
@@ -67,7 +67,7 @@ namespace MASA.Blazor
                 })
                 .Apply("day", cssBuilder =>
                 {
-                    var timestamp = cssBuilder.Context.Data as CalendarTimestamp;
+                    var timestamp = cssBuilder.Data as CalendarTimestamp;
                     var outside = IsOutside(timestamp);
                     cssBuilder
                         .Add("m-calendar-weekly__day")
@@ -88,7 +88,7 @@ namespace MASA.Blazor
                 {
                     props.TryGetValue("ItemIndex", out var itemIndexStr);
                     var itemIndex = Convert.ToInt32(itemIndexStr);
-                    var day = Days()?[itemIndex];
+                    var day = Days?[itemIndex];
 
                     props[nameof(MButton.Color)] = (day?.Present ?? false) ? Color : "transparent";
                     props[nameof(MButton.Fab)] = true;
@@ -120,20 +120,22 @@ namespace MASA.Blazor
             CalendarDateTimeUtils.WeekNumber(determineDay.Year, determineDay.Month - 1,
                 determineDay.Day, ParsedWeekdays()[0], LocaleFirstDayOfYear.ToInt32());
 
-        public List<CalendarTimestamp> Day => Days();
+        public List<CalendarTimestamp> Day => Days;
 
         public new int WeekDays => ParsedWeekdays().Count;
 
-        public Func<CalendarTimestamp, bool, string> MonthFormatter()
+        public string MonthFormatter(CalendarTimestamp tms, bool @short)
         {
             if (MonthFormat != null)
-                return MonthFormat;
+                return MonthFormat(tms, @short);
 
             var longOptions = new CalendarFormatterOptions { TimeZone = "UTC", Day = "long" };
             var shortOptions = new CalendarFormatterOptions { TimeZone = "UTC", Day = "short" };
 
-            return CalendarTimestampUtils.CreateNativeLocaleFormatter(_currentLocale, 
-                (_tms, @short) => @short ? shortOptions : longOptions);
+            var nativeLocaleFormatter = CalendarTimestampUtils.CreateNativeLocaleFormatter(
+                CurrentLocale, @short ? shortOptions : longOptions);
+
+            return nativeLocaleFormatter(tms, @short);
         }
     }
 }
