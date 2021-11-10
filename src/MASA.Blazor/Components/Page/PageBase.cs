@@ -372,7 +372,7 @@ namespace MASA.Blazor
             }
         }
 
-        string T(string key)
+        Dictionary<string,string> T(string key)
         {
             return I18n.T(key);
         }
