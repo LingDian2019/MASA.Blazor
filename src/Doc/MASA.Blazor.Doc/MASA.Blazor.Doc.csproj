@@ -64,7 +64,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\meta\" />		
+		<Folder Include="wwwroot\meta\" />
 	</ItemGroup>
 
 	<Target Name="RunCli" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug'">
