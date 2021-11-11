@@ -1,23 +1,26 @@
 ﻿<MContainer Fluid>
-    <MRadioGroup @bind-Value="_column"
+    <MRadioGroup @bind-Value="column"
                  Column>
         <MRadio Label="Option 1"
                 Value="@("radio-1")">
         </MRadio>
         <MRadio Label="Option 2"
-                Value="@("radio-2")"></MRadio>
+                Value="@("radio-2")">
+        </MRadio>
     </MRadioGroup>
     <hr>
-    <MRadioGroup @bind-Value="_row"
+    <MRadioGroup @bind-Value="row"
                  Row>
         <MRadio Label="Option 1"
-                Value="@("radio-1")"></MRadio>
+                Value="@("radio-1")">
+        </MRadio>
         <MRadio Label="Option 2"
-                Value="@("radio-2")"></MRadio>
+                Value="@("radio-2")">
+        </MRadio>
     </MRadioGroup>
 </MContainer>
 
 @code {
-    private string _column;
-    private string _row;
+    string column;
+    string row;
 }
